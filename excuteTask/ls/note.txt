@@ -1,0 +1,2 @@
+ndk.dir=/Users/syu/Library/Android/sdk/ndk-bundle
+sdk.dir=/Users/syu/Library/Android/sdk

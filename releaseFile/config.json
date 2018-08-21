@@ -1,0 +1,24 @@
+{
+    "src_git": "D:/zsytssk/job/git/exposiveDog/laya",
+    "dist_git": "\\\\169.254.252.81\\explodingdog",
+    "release_js": {
+        "src": "js"
+    },
+    "release_light": {
+        "src": "js",
+        "laya/assets/animation": "animation",
+        "laya/assets/font": "font",
+        "laya/assets/audio": "audio"
+    },
+    "release_all": {
+        "src": "js",
+        "laya/assets/animation": "animation",
+        "laya/assets/font": "font",
+        "laya/assets/audio": "audio",
+        "bin/images": "images",
+        "bin/res": "res"
+    },
+    "release_libs": {
+        "bin/libs": "libs"
+    }
+}
