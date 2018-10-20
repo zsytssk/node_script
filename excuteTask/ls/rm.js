@@ -1,21 +1,25 @@
-const fs = require('fs');
+const fs = require("fs");
+const { exists, readdir, unlink, rmdir } = require("./asyncUtil");
 
 module.exports = function rm(path) {
-    if (!fs.existsSync(path)) {
-        return;
+  return new Promise(async (resolve, reject) => {
+    if (!(await exists(path))) {
+      return;
     }
     const info = fs.lstatSync(path);
     if (info.isFile()) {
-        fs.unlinkSync(path);
-        return;
+      await unlink(path);
+      return;
     }
-    fs.readdirSync(path).forEach(function(file, index) {
-        const curPath = path + '/' + file;
-        if (fs.lstatSync(curPath).isDirectory()) {
-            rm(curPath);
-        } else {
-            fs.unlinkSync(curPath);
-        }
-    });
-    fs.rmdirSync(path);
+    let files = readdir(path);
+    for (let file of files) {
+      const curPath = path + "/" + file;
+      if (fs.lstatSync(curPath).isDirectory()) {
+        await rm(curPath);
+      } else {
+        await unlink(curPath);
+      }
+    }
+    await rmdir(path);
+  });
 };

@@ -1,18 +1,24 @@
-const fs = require('fs');
+const fs = require("fs");
+const path = require("path");
+const { readdir } = require("./asyncUtil");
 
-function walkSync(dir, filelist) {
-    if (dir[dir.length - 1] != '/') dir = dir.concat('/');
+async function walk(dir) {
+  dir = path.normalize(dir);
 
-    const files = fs.readdirSync(dir);
-    filelist = filelist || [];
-    files.forEach(function(file) {
-        if (fs.statSync(dir + file).isDirectory()) {
-            filelist = walkSync(dir + file + '/', filelist);
-        } else {
-            filelist.push(dir + file);
-        }
-    });
-    return filelist;
+  let file_list = [];
+  const files = await readdir(dir);
+
+  for (let file of files) {
+    const file_path = path.join(dir, file);
+    if (fs.statSync(file_path).isDirectory()) {
+      const sub_files = await walk(file_path);
+      file_list = file_list.concat(sub_files);
+    } else {
+      file_list.push(file_path);
+    }
+  }
+
+  return file_list;
 }
 
-module.exports = walkSync;
+module.exports = walk;
